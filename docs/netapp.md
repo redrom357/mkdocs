@@ -92,3 +92,33 @@ VS01             VS01_lif01:4049                        UDP/unknown
     100024    1   udp   4046  status
     100024    1   tcp   4046  status
 ```
+
+## How to check vscan server status
+
+### You received the following alert
+```bash
+affa220-1-cluster::> event log show -node <node> -seqnum <seqnum>
+
+                  Node: <node>
+             Sequence#: 5290401
+                  Time: 3/3/2025 12:51:24
+              Severity: EMERGENCY
+                Source: nblade2
+          Message Name: Nblade.vscanNoScannerConn
+                 Event: Nblade.vscanNoScannerConn: Vserver "<svm>" has no virus scanner connection.
+     Corrective Action: Ensure that the scanner pool is properly configured and the AV servers are active and connected to ONTAP.
+           Description: This message occurs when ONTAP(R) has no vscan connection for servicing virus scan-requests. This might cause data unavailability if the scan-mandatory option is enabled.
+```
+
+### Check the connection status on the affected node and vserver
+
+```bash
+cluster::> vscan connection-status show -node <node> -vserver <vserver>
+  (vserver vscan connection-status show)
+
+                           Node: <node>
+                        Vserver: <vserver>
+List of Connected Vscan Servers: <vscan_server>
+Number of Connected Vscan Servers Serving the Vserver: 1
+```
+
