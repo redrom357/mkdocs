@@ -122,3 +122,63 @@ List of Connected Vscan Servers: <vscan_server>
 Number of Connected Vscan Servers Serving the Vserver: 1
 ```
 
+## How to check cluster peer health 
+
+### Check peer health
+
+```bash
+cluster::> cluster peer health show
+Node       Cluster-Name                 Node-Name
+             Ping-Status               RDB-Health Cluster-Health Availability
+---------- --------------------------- --------- --------------- ------------
+nodea dest-cluster      dest-nodea
+             Data: interface_reachable
+             ICMP: -                   true      true            true
+                                       dest-nodeb
+             Data: interface_reachable
+             ICMP: -                   true      true            true
+nodeb dest-cluster      dest-nodea
+             Data: interface_reachable
+             ICMP: -                   true      true            true
+                                       dest-nodeb
+             Data: interface_reachable
+             ICMP: -                   true      true            true
+4 entries were displayed.
+```
+
+### Ping peer nodes
+
+```bash
+cluster::> cluster peer ping
+Node: nodea        Destination Cluster: cluster
+Destination Node IP Address       Count  TTL RTT(ms) Status
+---------------- ---------------- ----- ---- ------- -------------------------
+nodea  10.59.25.243         1   64 0.08500000000000001 interface_reachable
+nodea  10.59.25.244         1   64   0.098 interface_reachable
+nodeb  10.59.25.245         1   64   0.341 interface_reachable
+nodeb  10.59.25.246         1   64   0.334 interface_reachable
+Node: nodea        Destination Cluster: dest-cluster
+Destination Node IP Address       Count  TTL RTT(ms) Status
+---------------- ---------------- ----- ---- ------- -------------------------
+dest-nodea  10.59.25.247         1   64   0.838 interface_reachable
+dest-nodea  10.59.25.248         1   64   1.403 interface_reachable
+dest-nodeb  10.59.25.249         1   64   0.639 interface_reachable
+dest-nodeb  10.59.25.250         1   64   1.395 interface_reachable
+Node: nodeb        Destination Cluster: cluster
+Destination Node IP Address       Count  TTL RTT(ms) Status
+---------------- ---------------- ----- ---- ------- -------------------------
+nodea  10.59.25.243         1   64   0.174 interface_reachable
+nodea  10.59.25.244         1   64   0.481 interface_reachable
+nodeb  10.59.25.245         1   64   0.157 interface_reachable
+nodeb  10.59.25.246         1   64   0.066 interface_reachable
+Node: nodeb        Destination Cluster: dest-cluster
+Destination Node IP Address       Count  TTL RTT(ms) Status
+---------------- ---------------- ----- ---- ------- -------------------------
+dest-nodea  10.59.25.247         1   64   0.796 interface_reachable
+dest-nodea  10.59.25.248         1   64   1.434 interface_reachable
+dest-nodeb  10.59.25.249         1   64   0.756 interface_reachable
+dest-nodeb  10.59.25.250         1   64   1.525 interface_reachable
+16 entries were displayed.
+```
+
+https://kb.netapp.com/on-prem/ontap/Ontap_OS/OS-KBs/Why_does_cpeer_unavailable_alert_occur_even_peering_status_is_interface_reachable
