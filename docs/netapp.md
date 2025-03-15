@@ -1,37 +1,50 @@
 # NetApp
 
-## How to telnet from a Netapp to test port availability
+## Network 
 
-### Unlock diag user and set password
+### How to change UTA Port Personality
+
+#### Change adapter mode
+```bash
+cluster1::> system node hardware unified-connect modify -node cluster1-01 -adapter 1a -mode fc* / cna**
+```
+*fibre channel
+*converged network adapter
+
+#### Reboot the node
+
+### How to telnet from a Netapp to test port availability
+
+#### Unlock diag user and set password
 ```bash
 ONTAP::> security login unlock -username diag
 
 ONTAP::> security login password -username diag
 ```
-### Go into Privileged Mode
+#### Go into Privileged Mode
 ```bash
 ONTAP::> set -privilege advanced
 ```
-### Change to Diag User
+#### Change to Diag User
 ```bash
 ONTAP::> set diag
 
 ONTAP::> systemshell local
 ```
-### Once here you can telnet like normal
+#### Once here you can telnet like normal
 ```bash
 ONTAP%>telnet mail.domain.com 25
 ```
-### To Break out 
+#### To Break out 
 
 CTRL C and CTRL D 
 
-### Relock Diag Account
+#### Relock Diag Account
 ```bash
 NETAPP::> security login unlock -username diag
 ```
 
-## Which Network File System (NFS) TCP and NFS UDP ports are used on the storage system?
+### Which Network File System (NFS) TCP and NFS UDP ports are used on the storage system?
 
 - The default ports used by the storage controller are as follows:
 
@@ -93,9 +106,11 @@ VS01             VS01_lif01:4049                        UDP/unknown
     100024    1   tcp   4046  status
 ```
 
-## How to check vscan server status
+## Antivirus
 
-### You received the following alert
+### How to check vscan server status
+
+#### You received the following alert
 ```bash
 affa220-1-cluster::> event log show -node <node> -seqnum <seqnum>
 
@@ -110,7 +125,7 @@ affa220-1-cluster::> event log show -node <node> -seqnum <seqnum>
            Description: This message occurs when ONTAP(R) has no vscan connection for servicing virus scan-requests. This might cause data unavailability if the scan-mandatory option is enabled.
 ```
 
-### Check the connection status on the affected node and vserver
+#### Check the connection status on the affected node and vserver
 
 ```bash
 cluster::> vscan connection-status show -node <node> -vserver <vserver>
@@ -122,9 +137,11 @@ List of Connected Vscan Servers: <vscan_server>
 Number of Connected Vscan Servers Serving the Vserver: 1
 ```
 
-## How to check cluster peer health 
+## Cluster peer 
 
-### Check peer health
+### How to check cluster peer health 
+
+#### Check peer health
 
 ```bash
 cluster::> cluster peer health show
@@ -146,7 +163,7 @@ nodeb dest-cluster      dest-nodea
 4 entries were displayed.
 ```
 
-### Ping peer nodes
+#### Ping peer nodes
 
 ```bash
 cluster::> cluster peer ping
