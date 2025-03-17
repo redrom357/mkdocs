@@ -38,3 +38,30 @@ vagrant ssh
 vagrant status
 ```
 
+## Boxes
+
+###  Vagrant Quick Start Commands
+
+#### List boxes
+
+```bash
+vagrant box list
+```
+
+#### Add a box
+
+```bash
+vagrant box add ubuntu/trusty64
+```
+
+### Update a box
+
+```bash
+vagrant box update
+```
+
+### Remove a box
+
+```bash
+vagrant box remove 
+```
