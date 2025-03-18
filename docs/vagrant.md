@@ -65,3 +65,46 @@ vagrant box update
 ```bash
 vagrant box remove 
 ```
+
+## Plugins
+
+### List plugins
+
+```bash
+vagrant plugin list
+```
+
+### Install plugins
+
+```bash
+vagrant plugin install vagrant-vbguest
+Installing the 'vagrant-vbguest' plugin. This can take a few minutes...
+Installed the plugin 'vagrant-vbguest (0.32.0)'!
+```
+
+```bash
+vagrant plugin list
+vagrant-vbguest (0.32.0, global)
+vagrant-vmware-desktop (3.0.4, global)
+  - Version Constraint: > 0
+```
+
+### Update plugins
+
+#### Update all plugins
+
+```bash
+vagrant plugin update
+```
+
+#### Update a specific plugin
+
+```bash
+vagrant plugin update vagrant-vbguest
+```
+
+### Remove a plugin
+
+```bash
+vagrant plugin uninstall vagrant-vbguest
+```
