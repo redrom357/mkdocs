@@ -7,7 +7,7 @@ Packer Packer may be installed in the following ways:
 - Installing from source. (Recommended for advanced users)
 - Using your system's package manager.
 
-=== Install Packer on Ubuntu
+=== "Install Packer on Ubuntu"
 ```bash
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
@@ -25,7 +25,7 @@ Packer v1.10.0
 packer -autocomplete-install
 ```
 
-=== Install Packer on Mac
+=== "Install Packer on Mac"
 
 ```bash
 # Load thrid party repo
@@ -39,7 +39,7 @@ packer version
 Packer v1.12.0
 ```
 
-=== Install Packer on Windows
+=== "Install Packer on Windows"
 
 Download binares here: 
 https://releases.hashicorp.com/packer/1.12.0/packer_1.12.0_windows_386.zip
