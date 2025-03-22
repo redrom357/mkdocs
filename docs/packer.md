@@ -15,7 +15,6 @@ sudo apt-get update && sudo apt-get install packer
 sudo cp /usr/bin/packer /usr/local/bin/packe
 
 # Validate the Packer Install
-```bash
 which packer
 /usr/local/bin/packer
 packer version
