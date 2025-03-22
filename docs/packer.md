@@ -9,21 +9,21 @@ Packer Packer may be installed in the following ways:
 
 === "Install Packer on Ubuntu"
 
-```bash
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install packer
-sudo cp /usr/bin/packer /usr/local/bin/packe
+    ```bash
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    sudo apt-get update && sudo apt-get install packer
+    sudo cp /usr/bin/packer /usr/local/bin/packe
 
-# Validate the Packer Install
-which packer
-/usr/local/bin/packer
-packer version
-Packer v1.10.0
+    # Validate the Packer Install
+    which packer
+    /usr/local/bin/packer
+    packer version
+    Packer v1.10.0
 
-# Enable autocompletion for Packer CLI
-packer -autocomplete-install
-```
+    # Enable autocompletion for Packer CLI
+    packer -autocomplete-install
+    ```
 
 === "Install Packer on Mac"
 
