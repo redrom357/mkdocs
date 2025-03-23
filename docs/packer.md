@@ -53,7 +53,8 @@ Packer Packer may be installed in the following ways:
     Packer v1.12.0
     ```
     
-# Packer CLI
+## Packer CLI
+
 The Packer command line interface (CLI) is how users/applications interact with Packer.  There is no UI or API for Packer.
 
 ### Use the Terraform CLI to Get Help
