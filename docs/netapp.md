@@ -19,6 +19,15 @@ cluster::> network port broadcast-domain add-ports -ipspace Default -broadcast-d
 cluster::> network port vlan show
 ```
 
+### Subnet Configuration
+
+#### Create a Subnet
+
+```bash
+cluster::> network subnet create -ipspace Default -subnet-name DeptB -broadcast-domain DeptB -subnet 172.23.15.2/255.255.255.0 -gateway 172.23.15.254 -ip-ranges 172.23.15.21-172.23.15.40 -force-upudate-lif-association
+cluster::> network subnet show
+```
+
 ### How to change UTA Port Personality
 
 #### Change adapter mode
