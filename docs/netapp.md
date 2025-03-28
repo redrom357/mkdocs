@@ -2,6 +2,23 @@
 
 ## Network 
 
+### VLAN Configuration
+
+#### Create a VLAN interface
+
+```bash
+cluster::> network port vlan create -node cluster1-01 -vlan-name a0a-15
+cluster::> network port vlan create -node cluster1-02 -vlan-name a0a-15
+```
+
+#### Add VLAN interface to a broadcast domain
+
+```bash
+cluster::> network port broadcast-domain add-ports -ipspace Default -broadcast-domain DeptB -ports cluster1-01:a0a-15
+cluster::> network port broadcast-domain add-ports -ipspace Default -broadcast-domain DeptB -ports cluster1-02:a0a-15
+cluster::> network port vlan show
+```
+
 ### How to change UTA Port Personality
 
 #### Change adapter mode
@@ -199,3 +216,4 @@ dest-nodeb  10.59.25.250         1   64   1.525 interface_reachable
 ```
 
 https://kb.netapp.com/on-prem/ontap/Ontap_OS/OS-KBs/Why_does_cpeer_unavailable_alert_occur_even_peering_status_is_interface_reachable
+
