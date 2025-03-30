@@ -7,16 +7,16 @@
 #### Create a VLAN interface
 
 ```bash
-cluster::> network port vlan create -node cluster1-01 -vlan-name a0a-15
-cluster::> network port vlan create -node cluster1-02 -vlan-name a0a-15
+cluster1::> network port vlan create -node cluster1-01 -vlan-name a0a-15
+cluster1::> network port vlan create -node cluster1-02 -vlan-name a0a-15
 ```
 
 #### Add VLAN interface to a broadcast domain
 
 ```bash
-cluster::> network port broadcast-domain add-ports -ipspace Default -broadcast-domain DeptB -ports cluster1-01:a0a-15
-cluster::> network port broadcast-domain add-ports -ipspace Default -broadcast-domain DeptB -ports cluster1-02:a0a-15
-cluster::> network port vlan show
+cluster1::> network port broadcast-domain add-ports -ipspace Default -broadcast-domain DeptB -ports cluster1-01:a0a-15
+cluster1::> network port broadcast-domain add-ports -ipspace Default -broadcast-domain DeptB -ports cluster1-02:a0a-15
+cluster1::> network port vlan show
 ```
 
 ### Subnet Configuration
@@ -24,15 +24,30 @@ cluster::> network port vlan show
 #### Create a Subnet
 
 ```bash
-cluster::> network subnet create -ipspace Default -subnet-name DeptB -broadcast-domain DeptB -subnet 172.23.15.2/255.255.255.0 -gateway 172.23.15.254 -ip-ranges 172.23.15.21-172.23.15.40 -force-upudate-lif-association
-cluster::> network subnet show
+cluster1::> network subnet create -ipspace Default -subnet-name DeptB -broadcast-domain DeptB -subnet 172.23.15.2/255.255.255.0 -gateway 172.23.15.254 -ip-ranges 172.23.15.21-172.23.15.40 -force-upudate-lif-association
+cluster1::> network subnet show
+```
+
+### Create a Data LIF
+
+#### Create a Data LIF using a Subnet
+
+```bash
+cluster1::> network interface create -vserver DeptB -lif cluster1-01_cifs -role data -data-protocol cifs -subnet-name DeptB -home-node cluster1-01 -home-port a0a-15
+cluster1::> network interface create -vserver DeptB -lif cluster1-02_cifs -role data -data-protocol cifs -subnet-name DeptB -home-node cluster1-02 -home-port a0a-15
+cluster1::> network interface create -vserver DeptB -lif cluster1-01_nfs -role data -data-protocol nfs -subnet-name DeptB -home-node cluster1-01 -home-port a0a-15
+cluster1::> network interface create -vserver DeptB -lif cluster1-02_nfs -role data -data-protocol nfs -subnet-name DeptB -home-node cluster1-02 -home-port a0a-15
+cluster1::> network interface create -vserver DeptB -lif cluster1-01_iscsi -role data -data-protocol iscsi -subnet-name DeptB -home-node cluster1-01 -home-port a0a-15
+cluster1::> network interface create -vserver DeptB -lif cluster1-02_iscsi -role data -data-protocol iscsi -subnet-name DeptB -home-node cluster1-02 -home-port a0a-15
+cluster1::> network interface show
+cluster1::> network interface show -vserver DeptB -lif cluster1-01_cifs
 ```
 
 ### How to change UTA Port Personality
 
 #### Change adapter mode
 ```bash
-cluster1::> system node hardware unified-connect modify -node cluster1-01 -adapter 1a -mode fc* / cna**
+cluster1-01::> system node hardware unified-connect modify -node cluster1-01 -adapter 1a -mode fc* / cna**
 ```
 *fibre channel
 *converged network adapter
@@ -43,23 +58,23 @@ cluster1::> system node hardware unified-connect modify -node cluster1-01 -adapt
 
 #### Unlock diag user and set password
 ```bash
-ONTAP::> security login unlock -username diag
+cluster1::> security login unlock -username diag
 
-ONTAP::> security login password -username diag
+cluster1::> security login password -username diag
 ```
 #### Go into Privileged Mode
 ```bash
-ONTAP::> set -privilege advanced
+cluster1::> set -privilege advanced
 ```
 #### Change to Diag User
 ```bash
-ONTAP::> set diag
+cluster1::> set diag
 
-ONTAP::> systemshell local
+cluster1::> systemshell local
 ```
 #### Once here you can telnet like normal
 ```bash
-ONTAP%>telnet mail.domain.com 25
+cluster1%>telnet mail.domain.com 25
 ```
 #### To Break out 
 
@@ -67,7 +82,7 @@ CTRL C and CTRL D
 
 #### Relock Diag Account
 ```bash
-NETAPP::> security login unlock -username diag
+cluster1::> security login unlock -username diag
 ```
 
 ### Which Network File System (NFS) TCP and NFS UDP ports are used on the storage system?
@@ -86,22 +101,22 @@ NETAPP::> security login unlock -username diag
 - It is possible to modify those default ports, therefore to check the currently configured ports on your storage controller please use the following commands,
 
 ```bash
-cDot::*> nfs show -vserver NFSsvm -fields rquotad-port ,nlm-port ,nsm-port ,mountd-port
+cluster1::*> nfs show -vserver NFSsvm -fields rquotad-port ,nlm-port ,nsm-port ,mountd-port
 vserver mountd-port nlm-port nsm-port rquotad-port
 ------- ----------- -------- -------- ------------
 NFSsvm    635         4045     4046     4049
 
-cDot::*>
+cluster1::*>
 ```
 
 - Alternatively show the ports listening on the node with the following
 
 ```bash
-cdot::> network connection listening show -node <node name>
+cluster1::> network connection listening show -node <node name>
 Vserver Name     Interface Name:Local Port              Protocol/Service
 ---------------- -------------------------------------  -----------------------
-Node: node 1
-Cluster          node1_clus1:7700                       TCP/ctlopcp
+Node: cluster1-01
+Cluster          cluster1-01:7700                       TCP/ctlopcp
 vs01             VS01_lif01:40001                       TCP/cifs-msrpc
 VS01             VS01_lif01:135                         TCP/cifs-msrpc
 VS01             VS01_lif01:4049                        UDP/unknown
@@ -138,9 +153,9 @@ VS01             VS01_lif01:4049                        UDP/unknown
 
 #### You received the following alert
 ```bash
-affa220-1-cluster::> event log show -node <node> -seqnum <seqnum>
+cluster1::> event log show -node cluster1-01 -seqnum <seqnum>
 
-                  Node: <node>
+                  Node: cluster1-01
              Sequence#: 5290401
                   Time: 3/3/2025 12:51:24
               Severity: EMERGENCY
@@ -154,10 +169,10 @@ affa220-1-cluster::> event log show -node <node> -seqnum <seqnum>
 #### Check the connection status on the affected node and vserver
 
 ```bash
-cluster::> vscan connection-status show -node <node> -vserver <vserver>
+cluster1::> vscan connection-status show -node cluster1-01 -vserver <vserver>
   (vserver vscan connection-status show)
 
-                           Node: <node>
+                           Node: cluster1-01
                         Vserver: <vserver>
 List of Connected Vscan Servers: <vscan_server>
 Number of Connected Vscan Servers Serving the Vserver: 1
@@ -170,7 +185,7 @@ Number of Connected Vscan Servers Serving the Vserver: 1
 #### Check peer health
 
 ```bash
-cluster::> cluster peer health show
+cluster1::> cluster peer health show
 Node       Cluster-Name                 Node-Name
              Ping-Status               RDB-Health Cluster-Health Availability
 ---------- --------------------------- --------- --------------- ------------
@@ -192,7 +207,7 @@ nodeb dest-cluster      dest-nodea
 #### Ping peer nodes
 
 ```bash
-cluster::> cluster peer ping
+cluster1::> cluster peer ping
 Node: nodea        Destination Cluster: cluster
 Destination Node IP Address       Count  TTL RTT(ms) Status
 ---------------- ---------------- ----- ---- ------- -------------------------
