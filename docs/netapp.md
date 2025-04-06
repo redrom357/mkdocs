@@ -241,3 +241,70 @@ dest-nodeb  10.59.25.250         1   64   1.525 interface_reachable
 
 https://kb.netapp.com/on-prem/ontap/Ontap_OS/OS-KBs/Why_does_cpeer_unavailable_alert_occur_even_peering_status_is_interface_reachable
 
+## Privileged modes
+
+### Set privileged advanced mode in nodeshell
+
+```bash
+cluster1::*> system node run -node cluster1-01
+Type 'exit' or 'Ctrl-D' to return to the CLI
+cluster1-01> priv set advanced
+Warning: These advanced commands are potentially dangerous; use
+         them only when directed to do so by NetApp
+         personnel.
+cluster1-01*> ls /etc
+.
+[...]
+```
+
+### Unlock, set password and login to diag account
+
+#### Unlock diag account 
+
+```bash
+cluster1::*> security login show -username diag
+
+Vserver: cluster1
+                                                                 Second
+User/Group                 Authentication                 Acct   Authentication
+Name           Application Method        Role Name        Locked Method
+-------------- ----------- ------------- ---------------- ------ --------------
+diag           console     password      admin            yes    none
+
+cluster1::*> security login unlock -username diag
+
+cluster1::*> security login show -username diag
+
+Vserver: cluster1
+                                                                 Second
+User/Group                 Authentication                 Acct   Authentication
+Name           Application Method        Role Name        Locked Method
+-------------- ----------- ------------- ---------------- ------ --------------
+diag           console     password      admin            no     none
+```
+
+#### Set password diag account 
+
+```bash
+cluster1::*> security login password -username diag
+
+Enter a new password: ******
+Enter it again: ******
+```
+
+#### Login to diag account
+
+```bash
+cluster1::*> systemshell -node cluster1-01
+  (system node systemshell)
+diag@127.0.0.1's password:
+
+Warning:  The system shell provides access to low-level
+diagnostic tools that can cause irreparable damage to
+the system if not used properly.  Use this environment
+only when directed to do so by support personnel.
+
+cluster1-01%
+```
+
+
